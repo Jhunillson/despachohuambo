@@ -398,11 +398,14 @@
 
   <div class="button-group">
     <button onclick="gerarResumo()">Gerar Resumo</button>
+    <button onclick="gravarSituacao()">Gravar Situação</button>
+    <button onclick="eliminarSituacao()">Eliminar Situação</button>
+    <button onclick="abrirGrafico()">Gráfico</button>
   </div>
 
   <div class="controls-section">
     <label>Operadores: 
-      <input type="text" id="operadores" placeholder="Nome dos operadores em Serviço">
+      <input type="text" id="operadores" placeholder="Operadores em Serviço">
     </label>
   </div>
 
@@ -544,6 +547,76 @@
           justificativaInput.style.display = "none";
           justificativaInput.value = "";
         }
+      }
+
+      function gravarSituacao() {
+        const dados = {};
+        const linhas = tabela.querySelectorAll("tr");
+        const agora = new Date();
+        
+        // Coletar dados de todas as localidades
+        linhas.forEach(linha => {
+          const tds = linha.querySelectorAll("td");
+          if (!tds.length) return;
+          
+          const localidade = tds[0].textContent;
+          dados[localidade] = {
+            demanda: parseFloat(tds[1].querySelector("input").value) || 0,
+            utilizada: parseFloat(tds[2].querySelector("input").value) || 0,
+            restrMT: parseFloat(tds[3].querySelector("input").value) || 0,
+            restrBT: parseFloat(tds[4].querySelector("input").value) || 0,
+            avariaMT: parseFloat(tds[5].querySelector("input").value) || 0,
+            avariaBT: parseFloat(tds[6].querySelector("input").value) || 0,
+            justMT: tds[3].querySelector(".just_mt").value,
+            justBT: tds[4].querySelector(".just_bt").value,
+            justAvMT: tds[5].querySelector(".just_av_mt").value,
+            justAvBT: tds[6].querySelector(".just_av_bt").value
+          };
+        });
+
+        // Criar objeto com todos os dados da situação
+        const situacao = {
+          timestamp: agora.toISOString(),
+          data: agora.toLocaleDateString('pt-PT'),
+          hora: document.getElementById("hora").value,
+          operadores: document.getElementById("operadores").value,
+          localidades: dados
+        };
+
+        // Recuperar situações existentes
+        let situacoes = JSON.parse(localStorage.getItem('situacoesOperativas') || '[]');
+        
+        // Adicionar nova situação
+        situacoes.push(situacao);
+        
+        // Manter apenas as últimas 50 situações para não sobrecarregar o storage
+        if (situacoes.length > 50) {
+          situacoes = situacoes.slice(-50);
+        }
+        
+        // Salvar no localStorage
+        localStorage.setItem('situacoesOperativas', JSON.stringify(situacoes));
+        
+        alert(`Situação operativa gravada com sucesso!\nData: ${situacao.data}\nHora: ${situacao.hora}`);
+      }
+
+      function eliminarSituacao() {
+        if (confirm('Tem certeza que deseja eliminar TODAS as situações operativas gravadas?')) {
+          localStorage.removeItem('situacoesOperativas');
+          alert('Todas as situações operativas foram eliminadas!');
+        }
+      }
+
+      function abrirGrafico() {
+        // Verificar se existem dados gravados
+        const situacoes = JSON.parse(localStorage.getItem('situacoesOperativas') || '[]');
+        if (situacoes.length === 0) {
+          alert('Não existem situações operativas gravadas. Grave pelo menos uma situação antes de visualizar os gráficos.');
+          return;
+        }
+        
+        // Abrir página de análise gráfica
+        window.open('analisegrafica.html', '_blank');
       }
   </script>
 </body>
