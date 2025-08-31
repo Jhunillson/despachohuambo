@@ -5,6 +5,7 @@ const localidades = [
 
 const tabela = document.getElementById("dados"); 
 
+// Preenche tabela dinamicamente
 localidades.forEach(loc => {
   const tr = document.createElement("tr");
   tr.innerHTML = `
@@ -40,22 +41,22 @@ function calcularDemanda(input) {
   const avariaMtInput = linha.querySelector('.avaria_mt');
   const avariaBtInput = linha.querySelector('.avaria_bt');
 
-  // Obter valores, defaulting para 0 se vazio
   const utilizada = parseFloat(utilizadaInput.value) || 0;
   const mt = parseFloat(mtInput.value) || 0;
   const bt = parseFloat(btInput.value) || 0;
   const avariaMt = parseFloat(avariaMtInput.value) || 0;
   const avariaBt = parseFloat(avariaBtInput.value) || 0;
 
-  // Calcular demanda como soma de todos os componentes
   const demandaCalculada = utilizada + mt + bt + avariaMt + avariaBt;
-  
-  // Atualizar campo de demanda
+
+  // Animação ao atualizar
   demandaInput.value = demandaCalculada.toFixed(2);
+  demandaInput.classList.add("highlight-update");
+  setTimeout(() => demandaInput.classList.remove("highlight-update"), 600);
 }
 
 function gerarResumo() {
-  let resumo = `DEM AT/ MT-RC\nDivisão de Despacho Huambo\nPonto de Situação Operativa da Província de Huambo\n${formatarDataCompleta()}\n\n\t\t${document.getElementById("hora").value}\n\n`;
+  let resumo = `*DEM AT/ MT-RC*\n*Divisão de Despacho Huambo*\n*Ponto de Situação Operativa da Província de Huambo*\n*${formatarDataCompleta()}*\n\n\t\t*${document.getElementById("hora").value}*\n\n`;
 
   let totalDemanda = 0, totalUtilizada = 0, totalMT = 0, totalBT = 0, avariaMT = 0, avariaBT = 0;
   const linhas = tabela.querySelectorAll("tr");
@@ -82,7 +83,6 @@ function gerarResumo() {
     const avMT = parseFloat(tds[5].querySelector("input").value) || 0;
     const avBT = parseFloat(tds[6].querySelector("input").value) || 0;
     
-    // Calcular grau de atendimento baseado na demanda calculada
     const grau = (demanda === 0) ? 0 : ((utilizada / demanda) * 100).toFixed(2);
 
     const justMT = tds[3].querySelector(".just_mt").value;
@@ -90,7 +90,7 @@ function gerarResumo() {
     const justAvMT = tds[5].querySelector(".just_av_mt").value;
     const justAvBT = tds[6].querySelector(".just_av_bt").value;
 
-    resumo += `${nome}:\n`;
+    resumo += `*${nome}:*\n`;
     resumo += `Demanda = ${demanda.toFixed(2)} MW\n`;
     resumo += `Pot. Utilizada = ${utilizada.toFixed(2)} MW\n`;
     resumo += `Restrição em MT = ${restrMT.toFixed(2)} MW${restrMT > 0 && justMT ? ` (${justMT})` : ""}\n`;
@@ -108,16 +108,17 @@ function gerarResumo() {
   });
 
   const grauFinal = (totalDemanda === 0) ? 0 : ((totalUtilizada / totalDemanda) * 100).toFixed(2);
-  resumo += `Demanda (Max) Total = ${totalDemanda.toFixed(2)} MW\nPot. Utilizada = ${totalUtilizada.toFixed(2)} MW\nPot. Restringida em MT = ${totalMT.toFixed(2)} MW\nPot. Restringida em BT = ${totalBT.toFixed(2)} MW\nPot. Avaria em MT = ${avariaMT.toFixed(2)} MW\nPot. Avaria em BT = ${avariaBT.toFixed(2)} MW\nGrau de Atendi. = ${grauFinal}%\n\nOperador(es): ${document.getElementById("operadores").value}\n\n\tDespacho - Huambo`;
+  resumo += `Demanda (Max) Total = ${totalDemanda.toFixed(2)} MW\nPot. Utilizada = ${totalUtilizada.toFixed(2)} MW\nPot. Restringida em MT = ${totalMT.toFixed(2)} MW\nPot. Restringida em BT = ${totalBT.toFixed(2)} MW\nPot. Avaria em MT = ${avariaMT.toFixed(2)} MW\nPot. Avaria em BT = ${avariaBT.toFixed(2)} MW\nGrau de Atendi. = ${grauFinal}%\n\n*Operador(es):* *${document.getElementById("operadores").value}*\n\n\t*Despacho - Huambo*`;
 
   document.getElementById("output").value = resumo;
+  showToast("Resumo gerado com sucesso!", "info");
 }
 
 function copiarTexto() {
   const textarea = document.getElementById("output");
   textarea.select();
   document.execCommand("copy");
-  alert("Texto copiado para a área de transferência!");
+  showToast("Texto copiado para a área de transferência!", "success");
 }
 
 function toggleJustificativa(input) {
@@ -136,7 +137,6 @@ function gravarSituacao() {
   const linhas = tabela.querySelectorAll("tr");
   const agora = new Date();
   
-  // Coletar dados de todas as localidades
   linhas.forEach(linha => {
     const tds = linha.querySelectorAll("td");
     if (!tds.length) return;
@@ -156,7 +156,6 @@ function gravarSituacao() {
     };
   });
 
-  // Criar objeto com todos os dados da situação
   const situacao = {
     timestamp: agora.toISOString(),
     data: agora.toLocaleDateString('pt-PT'),
@@ -165,38 +164,44 @@ function gravarSituacao() {
     localidades: dados
   };
 
-  // Recuperar situações existentes
   let situacoes = JSON.parse(localStorage.getItem('situacoesOperativas') || '[]');
-  
-  // Adicionar nova situação
   situacoes.push(situacao);
-  
-  // Manter apenas as últimas 50 situações para não sobrecarregar o storage
   if (situacoes.length > 50) {
     situacoes = situacoes.slice(-50);
   }
-  
-  // Salvar no localStorage
   localStorage.setItem('situacoesOperativas', JSON.stringify(situacoes));
   
-  alert(`Situação operativa gravada com sucesso!\nData: ${situacao.data}\nHora: ${situacao.hora}`);
+  showToast(`Situação operativa gravada! (${situacao.data} - ${situacao.hora})`, "success");
 }
 
 function eliminarSituacao() {
   if (confirm('Tem certeza que deseja eliminar TODAS as situações operativas gravadas?')) {
     localStorage.removeItem('situacoesOperativas');
-    alert('Todas as situações operativas foram eliminadas!');
+    showToast('Todas as situações operativas foram eliminadas!', "error");
   }
 }
 
 function abrirGrafico() {
-  // Verificar se existem dados gravados
   const situacoes = JSON.parse(localStorage.getItem('situacoesOperativas') || '[]');
   if (situacoes.length === 0) {
-    alert('Não existem situações operativas gravadas. Grave pelo menos uma situação antes de visualizar os gráficos.');
+    showToast('Não existem situações gravadas. Grave pelo menos uma antes de visualizar.', "error");
     return;
   }
-  
-  // Abrir página de análise gráfica
   window.open('analisegrafica.html', '_blank');
+}
+
+// ---------- Sistema de Toasts ----------
+function showToast(mensagem, tipo = "info") {
+  const toast = document.createElement("div");
+  toast.className = `toast toast-${tipo}`;
+  toast.innerText = mensagem;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add("show");
+  }, 100);
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+    setTimeout(() => toast.remove(), 500);
+  }, 4000);
 }
