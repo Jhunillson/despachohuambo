@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Situação RC - Região Centro</title>
+  <link rel="stylesheet" href="situacao-rc-style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🌐 Situação Operativa Regional - Centro</h1>
+      <p>Configuração dos Dados das Províncias da Região Centro</p>
+    </div>
+
+    <div class="controls-section">
+      <button onclick="voltarPagina()" class="btn-voltar">← Voltar ao Despacho</button>
+      <label>Hora:
+        <select id="horaRC">
+          <option>08h00</option>
+          <option>12h00</option>
+          <option>18h00</option>
+          <option>20h00</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="info-box">
+      <h3>ℹ️ Instruções:</h3>
+      <p><strong>HUAMBO:</strong> Dados preenchidos automaticamente com base na página principal</p>
+      <p><strong>Outras Províncias:</strong> Preencha os campos abaixo conforme os dados disponíveis</p>
+      <p><strong>Operadores:</strong> Insira os nomes dos operadores responsáveis</p>
+    </div>
+
+    <!-- Dados do Huambo (automáticos) -->
+    <div class="provincia-card huambo-card">
+      <h2>⚡ HUAMBO (Automático)</h2>
+      <div class="dados-grid">
+        <div class="campo-readonly">
+          <label>Demanda Total (MW):</label>
+          <input type="text" id="huambo_demanda" readonly>
+        </div>
+        <div class="campo-readonly">
+          <label>Potência Utilizada (MW):</label>
+          <input type="text" id="huambo_utilizada" readonly>
+        </div>
+        <div class="campo-readonly">
+          <label>Restrição MT (MW):</label>
+          <input type="text" id="huambo_restr_mt" readonly>
+        </div>
+        <div class="campo-readonly">
+          <label>Restrição BT (MW):</label>
+          <input type="text" id="huambo_restr_bt" readonly>
+        </div>
+        <div class="campo-readonly">
+          <label>Avaria MT (MW):</label>
+          <input type="text" id="huambo_avaria_mt" readonly>
+        </div>
+        <div class="campo-readonly">
+          <label>Avaria BT (MW):</label>
+          <input type="text" id="huambo_avaria_bt" readonly>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dados de Benguela -->
+    <div class="provincia-card">
+      <h2>🏭 BENGUELA</h2>
+      <div class="dados-grid">
+        <div class="campo-readonly">
+          <label>Demanda Total (MW):</label>
+          <input type="text" id="benguela_demanda" readonly>
+        </div>
+        <div class="campo">
+          <label>Potência Utilizada (MW):</label>
+          <input type="number" step="0.01" id="benguela_utilizada" value="0.00" oninput="calcularDemanda('benguela')">
+        </div>
+        <div class="campo">
+          <label>Restrição MT (MW):</label>
+          <input type="number" step="0.01" id="benguela_restr_mt" value="0.00" oninput="calcularDemanda('benguela'); toggleJustificativa('benguela', 'restr_mt')">
+          <input type="text" id="benguela_just_restr_mt" placeholder="Justificativa" class="justificativa" style="display:none;">
+        </div>
+        <div class="campo">
+          <label>Restrição BT (MW):</label>
+          <input type="number" step="0.01" id="benguela_restr_bt" value="0.00" oninput="calcularDemanda('benguela'); toggleJustificativa('benguela', 'restr_bt')">
+          <input type="text" id="benguela_just_restr_bt" placeholder="Justificativa" class="justificativa" style="display:none;">
+        </div>
+        <div class="campo">
+          <label>Avaria MT (MW):</label>
+          <input type="number" step="0.01" id="benguela_avaria_mt" value="0.00" oninput="calcularDemanda('benguela'); toggleJustificativa('benguela', 'avaria_mt')">
+          <input type="text" id="benguela_just_avaria_mt" placeholder="Justificativa" class="justificativa" style="display:none;">
+        </div>
+        <div class="campo">
+          <label>Avaria BT (MW):</label>
+          <input type="number" step="0.01" id="benguela_avaria_bt" value="0.00" oninput="calcularDemanda('benguela'); toggleJustificativa('benguela', 'avaria_bt')">
+          <input type="text" id="benguela_just_avaria_bt" placeholder="Justificativa" class="justificativa" style="display:none;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Dados do Bié -->
+    <div class="provincia-card">
+      <h2>🌾 BIÉ</h2>
+      <div class="dados-grid">
+        <div class="campo-readonly">
+          <label>Demanda Total (MW):</label>
+          <input type="text" id="bie_demanda" readonly>
+        </div>
+        <div class="campo">
+          <label>Potência Utilizada (MW):</label>
+          <input type="number" step="0.01" id="bie_utilizada" value="0.00" oninput="calcularDemanda('bie')">
+        </div>
+        <div class="campo">
+          <label>Restrição MT (MW):</label>
+          <input type="number" step="0.01" id="bie_restr_mt" value="0.00" oninput="calcularDemanda('bie'); toggleJustificativa('bie', 'restr_mt')">
+          <input type="text" id="bie_just_restr_mt" placeholder="Justificativa" class="justificativa" style="display:none;">
+        </div>
+        <div class="campo">
+          <label>Restrição BT (MW):</label>
+          <input type="number" step="0.01" id="bie_restr_bt" value="0.00" oninput="calcularDemanda('bie'); toggleJustificativa('bie', 'restr_bt')">
+          <input type="text" id="bie_just_restr_bt" placeholder="Justificativa" class="justificativa" style="display:none;">
+        </div>
+        <div class="campo">
+          <label>Avaria MT (MW):</label>
+          <input type="number" step="0.01" id="bie_avaria_mt" value="0.00" oninput="calcularDemanda('bie'); toggleJustificativa('bie', 'avaria_mt')">
+          <input type="text" id="bie_just_avaria_mt" placeholder="Justificativa" class="justificativa" style="display:none;">
+        </div>
+        <div class="campo">
+          <label>Avaria BT (MW):</label>
+          <input type="number" step="0.01" id="bie_avaria_bt" value="0.00" oninput="calcularDemanda('bie'); toggleJustificativa('bie', 'avaria_bt')">
+          <input type="text" id="bie_just_avaria_bt" placeholder="Justificativa" class="justificativa" style="display:none;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Dados do Cuanza-Sul -->
+    <div class="provincia-card">
+      <h2>🏞️ CUANZA-SUL</h2>
+      <div class="dados-grid">
+        <div class="campo-readonly">
+          <label>Demanda Total (MW):</label>
+          <input type="text" id="cuanza_demanda" readonly>
+        </div>
+        <div class="campo">
+          <label>Potência Utilizada (MW):</label>
+          <input type="number" step="0.01" id="cuanza_utilizada" value="0.00" oninput="calcularDemanda('cuanza')">
+        </div>
+        <div class="campo">
+          <label>Restrição MT (MW):</label>
+          <input type="number" step="0.01" id="cuanza_restr_mt" value="0.00" oninput="calcularDemanda('cuanza'); toggleJustificativa('cuanza', 'restr_mt')">
+          <input type="text" id="cuanza_just_restr_mt" placeholder="Justificativa" class="justificativa" style="display:none;">
+        </div>
+        <div class="campo">
+          <label>Restrição BT (MW):</label>
+          <input type="number" step="0.01" id="cuanza_restr_bt" value="0.00" oninput="calcularDemanda('cuanza'); toggleJustificativa('cuanza', 'restr_bt')">
+          <input type="text" id="cuanza_just_restr_bt" placeholder="Justificativa" class="justificativa" style="display:none;">
+        </div>
+        <div class="campo">
+          <label>Avaria MT (MW):</label>
+          <input type="number" step="0.01" id="cuanza_avaria_mt" value="0.00" oninput="calcularDemanda('cuanza'); toggleJustificativa('cuanza', 'avaria_mt')">
+          <input type="text" id="cuanza_just_avaria_mt" placeholder="Justificativa" class="justificativa" style="display:none;">
+        </div>
+        <div class="campo">
+          <label>Avaria BT (MW):</label>
+          <input type="number" step="0.01" id="cuanza_avaria_bt" value="0.00" oninput="calcularDemanda('cuanza'); toggleJustificativa('cuanza', 'avaria_bt')">
+          <input type="text" id="cuanza_just_avaria_bt" placeholder="Justificativa" class="justificativa" style="display:none;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Operadores -->
+    <div class="controls-section">
+      <label>Operadores Responsáveis:
+        <input type="text" id="operadoresRC" placeholder="Operadores em Serviço" style="width: 400px;">
+      </label>
+    </div>
+
+    <!-- Botões de Ação -->
+    <div class="controls-section">
+      <button onclick="carregarDadosHuambo()" class="btn-refresh">🔄 Atualizar Dados Huambo</button>
+      <button onclick="gerarRelatorioRC()" class="btn-gerar">📊 Gerar Situação RC</button>
+      <button onclick="salvarConfiguracao()" class="btn-salvar">💾 Salvar Configuração</button>
+      <button onclick="carregarConfiguracao()" class="btn-carregar">📁 Carregar Configuração</button>
+    </div>
+
+    <!-- Área do Relatório -->
+    <div class="relatorio-container">
+      <h3>📋 Relatório da Situação RC</h3>
+      <textarea id="relatorioOutput" readonly placeholder="O relatório da Situação RC aparecerá aqui após clicar em 'Gerar Situação RC'..."></textarea>
+      <button onclick="copiarEPartilharRC()" class="btn-partilhar">📱 Copiar e Partilhar</button>
+    </div>
+
+    <footer class="copyright">
+      <p>&copy; 2025 Divisão de Despacho - Região Centro. Todos os direitos reservados.</p>
+      <p>Sistema de Controle Operativo Regional | ENDE - Empresa Nacional de Electricidade</p>
+    </footer>
+  </div>
+
+  <script src="situacao-rc-script.js"></script>
+</body>
+</html>

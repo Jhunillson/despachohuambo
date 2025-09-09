@@ -121,6 +121,10 @@ function gerarResumo() {
   showToast("Resumo gerado com sucesso!", "info");
 }
 
+function abrirSituacaoRC() {
+  window.open('situacao-rc.html', '_blank');
+}
+
 function copiarEPartilhar() {
   const textarea = document.getElementById("output");
   const texto = textarea.value;
