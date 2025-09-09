@@ -166,7 +166,7 @@ function calcularDemanda(provincia) {
     relatorio += `Total Avaria em MT =${totais.avariaMT.toFixed(2)} MW\n`;
     relatorio += `Total Avaria em BT = ${totais.avariaBT.toFixed(2)} MW\n`;
     relatorio += `*Grau de Atendimento*= *${grauRegional}%*\n\n`;
-    relatorio += `                    **Operadores**\n        **${operadores}**\n *Att., Despacho, ENDE - HUAMBO*`;
+    relatorio += `                    *Operadores*\n        *${operadores}*\n *Att., Despacho, ENDE - HUAMBO*`;
   
     return relatorio;
   }
