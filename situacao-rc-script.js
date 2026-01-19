@@ -1,3 +1,8 @@
+// Função para formatar números com vírgula
+function formatarNumero(numero, casasDecimais = 2) {
+  return numero.toFixed(casasDecimais).replace('.', ',');
+}
+
 // Função principal de cálculo de demanda
 function calcularDemanda(provincia) {
     try {
@@ -78,12 +83,12 @@ function calcularDemanda(provincia) {
         const demandaHuambo = totalUtilizada + totalRestrMT + totalRestrBT + totalAvariaMT + totalAvariaBT;
   
         // Atualizar campos do Huambo
-        document.getElementById('huambo_demanda').value = demandaHuambo.toFixed(2);
-        document.getElementById('huambo_utilizada').value = totalUtilizada.toFixed(2);
-        document.getElementById('huambo_restr_mt').value = totalRestrMT.toFixed(2);
-        document.getElementById('huambo_restr_bt').value = totalRestrBT.toFixed(2);
-        document.getElementById('huambo_avaria_mt').value = totalAvariaMT.toFixed(2);
-        document.getElementById('huambo_avaria_bt').value = totalAvariaBT.toFixed(2);
+        document.getElementById('huambo_demanda').value = formatarNumero(demandaHuambo);
+        document.getElementById('huambo_utilizada').value = formatarNumero(totalUtilizada);
+        document.getElementById('huambo_restr_mt').value = formatarNumero(totalRestrMT);
+        document.getElementById('huambo_restr_bt').value = formatarNumero(totalRestrBT);
+        document.getElementById('huambo_avaria_mt').value = formatarNumero(totalAvariaMT);
+        document.getElementById('huambo_avaria_bt').value = formatarNumero(totalAvariaBT);
         document.getElementById('horaRC').value = ultimaSituacao.hora || '18h00';
   
         mostrarToast('Dados do Huambo carregados com sucesso!', 'success');
@@ -145,26 +150,26 @@ function calcularDemanda(provincia) {
     // Adicionar cada província
     Object.keys(provincias).forEach(provincia => {
       const dados = provincias[provincia];
-      const grau = (dados.demanda === 0) ? 100 : ((dados.utilizada / dados.demanda) * 100).toFixed(2);
+      const grau = (dados.demanda === 0) ? '100,00' : formatarNumero((dados.utilizada / dados.demanda) * 100);
       
       relatorio += `*${provincia}*\n`;
       relatorio += adicionarSeparador(provincia);
-      relatorio += `Total Demanda = ${dados.demanda.toFixed(2)} MW\n`;
+      relatorio += `Total Demanda = ${formatarNumero(dados.demanda)} MW\n`;
       relatorio += formatarDadosProvincia(provincia, dados, grau);
       relatorio += adicionarSeparadorFinal(provincia);
     });
   
     // Totais regionais
     const totais = calcularTotaisRegionais(provincias);
-    const grauRegional = (totais.demanda === 0) ? 100 : ((totais.utilizada / totais.demanda) * 100).toFixed(2);
+    const grauRegional = (totais.demanda === 0) ? '100,00' : formatarNumero((totais.utilizada / totais.demanda) * 100);
   
     relatorio += ` *TOTAL DA REGIÃO*\n___________________________________\n`;
-    relatorio += `Total Demanda = ${totais.demanda.toFixed(2)} MW\n`;
-    relatorio += `P.Total Utilizada = ${totais.utilizada.toFixed(2)} MW\n`;
-    relatorio += `Restrição em MT = ${totais.restrMT.toFixed(2)} MW\n`;
-    relatorio += `Restrição em BT = ${totais.restrBT.toFixed(2)} MW\n`;
-    relatorio += `Total Avaria em MT =${totais.avariaMT.toFixed(2)} MW\n`;
-    relatorio += `Total Avaria em BT = ${totais.avariaBT.toFixed(2)} MW\n`;
+    relatorio += `Total Demanda = ${formatarNumero(totais.demanda)} MW\n`;
+    relatorio += `P.Total Utilizada = ${formatarNumero(totais.utilizada)} MW\n`;
+    relatorio += `Restrição em MT = ${formatarNumero(totais.restrMT)} MW\n`;
+    relatorio += `Restrição em BT = ${formatarNumero(totais.restrBT)} MW\n`;
+    relatorio += `Total Avaria em MT =${formatarNumero(totais.avariaMT)} MW\n`;
+    relatorio += `Total Avaria em BT = ${formatarNumero(totais.avariaBT)} MW\n`;
     relatorio += `*Grau de Atendimento*= *${grauRegional}%*\n\n`;
     relatorio += `                    *Operadores*\n        *${operadores}*\n *Att., Despacho, ENDE - HUAMBO*`;
   
@@ -186,25 +191,25 @@ function calcularDemanda(provincia) {
     let texto = "";
     
     if (provincia === "BIÉ") {
-      texto += `P.Total Utilizada = ${dados.utilizada.toFixed(2)} MW\n`;
-      texto += `P.Restringida MT = ${dados.restrMT.toFixed(2)} MW\n`;
-      texto += `P.Restringida BT = ${dados.restrBT.toFixed(2)} MW\n`;
-      texto += `Total avaria em MT = ${dados.avariaMT.toFixed(2)} MW\n`;
-      texto += `Total avaria em BT = ${dados.avariaBT.toFixed(2)} MW\n`;
+      texto += `P.Total Utilizada = ${formatarNumero(dados.utilizada)} MW\n`;
+      texto += `P.Restringida MT = ${formatarNumero(dados.restrMT)} MW\n`;
+      texto += `P.Restringida BT = ${formatarNumero(dados.restrBT)} MW\n`;
+      texto += `Total avaria em MT = ${formatarNumero(dados.avariaMT)} MW\n`;
+      texto += `Total avaria em BT = ${formatarNumero(dados.avariaBT)} MW\n`;
       texto += `*Grau de atendimento = ${grau}%*\n`;
     } else if (provincia === "CUANZA-SUL") {
-      texto += `P.Total Utilizada =${dados.utilizada.toFixed(2)}  MW\n`;
-      texto += `P.Restringida em MT = ${dados.restrMT.toFixed(2)} MW\n`;
-      texto += `P. Restringida em BT = ${dados.restrBT.toFixed(2)} MW\n`;
-      texto += `Total avaria em MT = ${dados.avariaMT.toFixed(2)} MW\n`;
-      texto += `Total avaria em BT = ${dados.avariaBT.toFixed(2)} MW\n`;
+      texto += `P.Total Utilizada =${formatarNumero(dados.utilizada)}  MW\n`;
+      texto += `P.Restringida em MT = ${formatarNumero(dados.restrMT)} MW\n`;
+      texto += `P. Restringida em BT = ${formatarNumero(dados.restrBT)} MW\n`;
+      texto += `Total avaria em MT = ${formatarNumero(dados.avariaMT)} MW\n`;
+      texto += `Total avaria em BT = ${formatarNumero(dados.avariaBT)} MW\n`;
       texto += `*Grau de atendimento = ${grau}%*\n`;
     } else {
-      texto += `P.Total Utilizada = ${dados.utilizada.toFixed(2)} MW\n`;
-      texto += `P.Restringida em MT = ${dados.restrMT.toFixed(2)} MW\n`;
-      texto += `P. Restringida em BT = ${dados.restrBT.toFixed(2)} MW\n`;
-      texto += `Total Avaria em MT = ${dados.avariaMT.toFixed(2)} MW\n`;
-      texto += `Total Avaria em BT = ${dados.avariaBT.toFixed(2)} MW\n`;
+      texto += `P.Total Utilizada = ${formatarNumero(dados.utilizada)} MW\n`;
+      texto += `P.Restringida em MT = ${formatarNumero(dados.restrMT)} MW\n`;
+      texto += `P. Restringida em BT = ${formatarNumero(dados.restrBT)} MW\n`;
+      texto += `Total Avaria em MT = ${formatarNumero(dados.avariaMT)} MW\n`;
+      texto += `Total Avaria em BT = ${formatarNumero(dados.avariaBT)} MW\n`;
       texto += `*Grau de ${provincia === "BENGUELA" ? "Atendimento" : "atendimento"} = ${grau}%*\n`;
     }
     
