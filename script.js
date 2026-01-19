@@ -396,6 +396,11 @@ function abrirGrafico() {
   window.open('analisegrafica.html', '_blank');
 }
 
+function abrirEscala() {
+  window.open('https://jhunillson.github.io/schedule/', '_blank');
+  showToast('Abrindo a página de escala...', 'info');
+}
+
 // ---------- Sistema de Toasts ----------
 function showToast(mensagem, tipo = "info") {
   const toast = document.createElement("div");
