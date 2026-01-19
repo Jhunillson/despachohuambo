@@ -5,6 +5,11 @@ const localidades = [
 
 const tabela = document.getElementById("dados"); 
 
+// Função para formatar números com vírgula
+function formatarNumero(numero, casasDecimais = 2) {
+  return numero.toFixed(casasDecimais).replace('.', ',');
+}
+
 // Preenche tabela dinamicamente
 localidades.forEach(loc => {
   const tr = document.createElement("tr");
@@ -90,7 +95,7 @@ function gerarResumo() {
     const avMT = parseFloat(tds[5].querySelector("input").value) || 0;
     const avBT = parseFloat(tds[6].querySelector("input").value) || 0;
     
-    const grau = (demanda === 0) ? 0 : ((utilizada / demanda) * 100).toFixed(2);
+    const grau = (demanda === 0) ? '0,00' : formatarNumero((utilizada / demanda) * 100);
 
     const justMT = tds[3].querySelector(".just_mt").value;
     const justBT = tds[4].querySelector(".just_bt").value;
@@ -98,12 +103,12 @@ function gerarResumo() {
     const justAvBT = tds[6].querySelector(".just_av_bt").value;
 
     resumo += `*${nome}:*\n`;
-    resumo += `Demanda = ${demanda.toFixed(2)} MW\n`;
-    resumo += `Pot. Utilizada = ${utilizada.toFixed(2)} MW\n`;
-    resumo += `Restrição em MT = ${restrMT.toFixed(2)} MW${restrMT > 0 && justMT ? ` (${justMT})` : ""}\n`;
-    resumo += `Restrição em BT = ${restrBT.toFixed(2)} MW${restrBT > 0 && justBT ? ` (${justBT})` : ""}\n`;
-    resumo += `Avaria em MT = ${avMT.toFixed(2)} MW${avMT > 0 && justAvMT ? ` (${justAvMT})` : ""}\n`;
-    resumo += `Avaria em BT = ${avBT.toFixed(2)} MW${avBT > 0 && justAvBT ? ` (${justAvBT})` : ""}\n`;
+    resumo += `Demanda = ${formatarNumero(demanda)} MW\n`;
+    resumo += `Pot. Utilizada = ${formatarNumero(utilizada)} MW\n`;
+    resumo += `Restrição em MT = ${formatarNumero(restrMT)} MW${restrMT > 0 && justMT ? ` (${justMT})` : ""}\n`;
+    resumo += `Restrição em BT = ${formatarNumero(restrBT)} MW${restrBT > 0 && justBT ? ` (${justBT})` : ""}\n`;
+    resumo += `Avaria em MT = ${formatarNumero(avMT)} MW${avMT > 0 && justAvMT ? ` (${justAvMT})` : ""}\n`;
+    resumo += `Avaria em BT = ${formatarNumero(avBT)} MW${avBT > 0 && justAvBT ? ` (${justAvBT})` : ""}\n`;
     resumo += `Grau de Atendi. = ${grau}%\n__________\n\n`;
 
     totalDemanda += demanda;
@@ -114,8 +119,8 @@ function gerarResumo() {
     avariaBT += avBT;
   });
 
-  const grauFinal = (totalDemanda === 0) ? 0 : ((totalUtilizada / totalDemanda) * 100).toFixed(2);
-  resumo += `Demanda (Max) Total = ${totalDemanda.toFixed(2)} MW\nPot. Utilizada = ${totalUtilizada.toFixed(2)} MW\nPot. Restringida em MT = ${totalMT.toFixed(2)} MW\nPot. Restringida em BT = ${totalBT.toFixed(2)} MW\nPot. Avaria em MT = ${avariaMT.toFixed(2)} MW\nPot. Avaria em BT = ${avariaBT.toFixed(2)} MW\nGrau de Atendi. = ${grauFinal}%\n\n*Operador(es):* *${document.getElementById("operadores").value}*\n\n\t*Despacho - Huambo*`;
+  const grauFinal = (totalDemanda === 0) ? '0,00' : formatarNumero((totalUtilizada / totalDemanda) * 100);
+  resumo += `Demanda (Max) Total = ${formatarNumero(totalDemanda)} MW\nPot. Utilizada = ${formatarNumero(totalUtilizada)} MW\nPot. Restringida em MT = ${formatarNumero(totalMT)} MW\nPot. Restringida em BT = ${formatarNumero(totalBT)} MW\nPot. Avaria em MT = ${formatarNumero(avariaMT)} MW\nPot. Avaria em BT = ${formatarNumero(avariaBT)} MW\nGrau de Atendi. = ${grauFinal}%\n\n*Operador(es):* *${document.getElementById("operadores").value}*\n\n\t*Despacho - Huambo*`;
 
   document.getElementById("output").value = resumo;
   showToast("Resumo gerado com sucesso!", "info");
