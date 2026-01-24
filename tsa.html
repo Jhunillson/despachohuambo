@@ -1,1 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TSA - Telesinalizações e Alarmes</title>
+  <link rel="stylesheet" href="tsa-style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>📡 TSA - Telesinalizações e Alarmes</h1>
+      <p>Sistema de Controle de Subestações - Região Centro</p>
+    </div>
 
+    <div class="controls-section">
+      <button onclick="voltarPagina()" class="btn-voltar">← Voltar ao Despacho</button>
+      <label>Hora:
+        <select id="horaTSA">
+          <option>08h00</option>
+          <option>12h00</option>
+          <option>18h00</option>
+          <option>20h00</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="info-box">
+      <h3>ℹ️ Instruções:</h3>
+      <p><strong>S.A.C.C:</strong> Sistema de Alimentação em Corrente Contínua</p>
+      <p><strong>S.A.C.A:</strong> Sistema de Alimentação em Corrente Alternada</p>
+      <p><strong>Dados Indisponíveis:</strong> Deixe o campo vazio ou escreva "Indisponível"</p>
+    </div>
+
+    <!-- SE Benfica -->
+    <div class="se-card">
+      <h2>⚡ SE Benfica</h2>
+      <div class="dados-grid">
+        <div class="campo-duplo">
+          <label>S.A.C.C (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="benfica_sacc_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="benfica_sacc_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+        <div class="campo-duplo">
+          <label>S.A.C.A (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="benfica_saca_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="benfica_saca_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SE Caála -->
+    <div class="se-card">
+      <h2>⚡ SE Caála</h2>
+      <div class="dados-grid">
+        <div class="campo-duplo">
+          <label>S.A.C.C (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="caala_sacc_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="caala_sacc_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+        <div class="campo-duplo">
+          <label>S.A.C.A (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="caala_saca_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="caala_saca_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SE Bailundo -->
+    <div class="se-card">
+      <h2>⚡ SE Bailundo</h2>
+      <div class="dados-grid">
+        <div class="campo-duplo">
+          <label>S.A.C.C (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="bailundo_sacc_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="bailundo_sacc_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+        <div class="campo-duplo">
+          <label>S.A.C.A (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="bailundo_saca_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="bailundo_saca_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SE Camussamba -->
+    <div class="se-card">
+      <h2>⚡ SE Camussamba</h2>
+      <div class="dados-grid">
+        <div class="campo-duplo">
+          <label>S.A.C.C (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="camussamba_sacc_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="camussamba_sacc_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+        <div class="campo-duplo">
+          <label>S.A.C.A (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="camussamba_saca_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="camussamba_saca_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SE Cuca Nova -->
+    <div class="se-card">
+      <h2>⚡ SE Cuca Nova</h2>
+      <div class="dados-grid">
+        <div class="campo-duplo">
+          <label>S.A.C.C (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="cuanova_sacc_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="cuanova_sacc_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+        <div class="campo-duplo">
+          <label>S.A.C.A (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="cuanova_saca_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="cuanova_saca_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Observações -->
+    <div class="observacoes-section">
+      <h3>📝 Observações</h3>
+      <textarea id="observacoes" placeholder="Ex: Os dados das SE's Centralidade da Caála, Cambiote e Catchiungo encontram-se indisponíveis"></textarea>
+    </div>
+
+    <!-- Operadores -->
+    <div class="controls-section">
+      <label>Operadores / Manobradores:
+        <input type="text" id="operadoresTSA" placeholder="Ex: Idília Cutalica, Valeriano Lumingo..." style="width: 500px;">
+      </label>
+    </div>
+
+    <!-- Botões de Ação -->
+    <div class="controls-section">
+      <button onclick="gerarResumoTSA()" class="btn-gerar">📊 Gerar Resumo TSA</button>
+      <button onclick="salvarConfiguracaoTSA()" class="btn-salvar">💾 Salvar Configuração</button>
+      <button onclick="carregarConfiguracaoTSA()" class="btn-carregar">📁 Carregar Configuração</button>
+    </div>
+
+    <!-- Área do Resumo -->
+    <div class="relatorio-container">
+      <h3>📋 Resumo TSA</h3>
+      <textarea id="resumoOutput" readonly placeholder="O resumo TSA aparecerá aqui após clicar em 'Gerar Resumo TSA'..."></textarea>
+      <button onclick="copiarEPartilharTSA()" class="btn-partilhar">📱 Copiar e Partilhar</button>
+    </div>
+
+    <footer class="copyright">
+      <p>&copy; 2025 Centro de Despacho - Região Centro. Todos os direitos reservados.</p>
+      <p>Sistema TSA | ENDE-EP - Empresa Nacional de Distribuição de Electricidade</p>
+    </footer>
+  </div>
+
+  <script src="tsa-script.js?v=1.0"></script>
+</body>
+</html>
