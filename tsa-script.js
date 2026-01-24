@@ -34,6 +34,52 @@ function formatarDadosSE(nome, sacc_v, sacc_a, saca_v, saca_a) {
   return texto;
 }
 
+// Verificar se uma SE tem todos os dados vazios
+function seTemDadosVazios(prefixo) {
+  const saccV = document.getElementById(`${prefixo}_sacc_v`).value.trim();
+  const saccA = document.getElementById(`${prefixo}_sacc_a`).value.trim();
+  const sacaV = document.getElementById(`${prefixo}_saca_v`).value.trim();
+  const sacaA = document.getElementById(`${prefixo}_saca_a`).value.trim();
+  
+  return !saccV && !saccA && !sacaV && !sacaA;
+}
+
+// Gerar lista de SE's com dados indisponíveis
+function gerarObservacaoAutomatica() {
+  const subestacoes = [
+    { id: 'benfica', nome: 'Benfica' },
+    { id: 'caala', nome: 'Caála' },
+    { id: 'centralidade', nome: 'Centralidade da Caála' },
+    { id: 'bailundo', nome: 'Bailundo' },
+    { id: 'camussamba', nome: 'Camussamba' },
+    { id: 'cuanova', nome: 'Cuca Nova' },
+    { id: 'cambiote', nome: 'Cambiote' },
+    { id: 'catchiungo', nome: 'Catchiungo' }
+  ];
+  
+  const sesIndisponiveis = [];
+  
+  subestacoes.forEach(se => {
+    if (seTemDadosVazios(se.id)) {
+      sesIndisponiveis.push(se.nome);
+    }
+  });
+  
+  if (sesIndisponiveis.length === 0) {
+    return '';
+  }
+  
+  if (sesIndisponiveis.length === 1) {
+    return `_*At.te:* Os dados da SE ${sesIndisponiveis[0]} encontram-se indisponíveis_\n`;
+  }
+  
+  // Formatar lista de SE's
+  const ultimaSE = sesIndisponiveis.pop();
+  const listaSEs = sesIndisponiveis.join(', ');
+  
+  return `_*At.te:* Os dados das SE's ${listaSEs} e ${ultimaSE} encontram-se indisponíveis_\n`;
+}
+
 // Gerar resumo TSA
 function gerarResumoTSA() {
   const operadores = document.getElementById("operadoresTSA").value.trim();
@@ -46,7 +92,6 @@ function gerarResumoTSA() {
   try {
     const dataCompleta = formatarDataCompleta();
     const hora = document.getElementById("horaTSA").value;
-    const observacoes = document.getElementById("observacoes").value.trim();
 
     let resumo = `*DEM AT/MT-RC, ENDE EP*\n`;
     resumo += `*CENTRO DE DESPACHO DA REGIÃO CENTRO*\n`;
@@ -72,6 +117,13 @@ function gerarResumoTSA() {
       'caala_saca_v', 'caala_saca_a'
     );
 
+    // SE Centralidade da Caála
+    resumo += formatarDadosSE(
+      'Centralidade da Caála',
+      'centralidade_sacc_v', 'centralidade_sacc_a',
+      'centralidade_saca_v', 'centralidade_saca_a'
+    );
+
     // SE Bailundo
     resumo += formatarDadosSE(
       'Bailundo',
@@ -93,9 +145,24 @@ function gerarResumoTSA() {
       'cuanova_saca_v', 'cuanova_saca_a'
     );
 
-    // Observações (se houver)
-    if (observacoes) {
-      resumo += `_*At.te:* ${observacoes}_\n`;
+    // SE Cambiote
+    resumo += formatarDadosSE(
+      'Cambiote',
+      'cambiote_sacc_v', 'cambiote_sacc_a',
+      'cambiote_saca_v', 'cambiote_saca_a'
+    );
+
+    // SE Catchiungo
+    resumo += formatarDadosSE(
+      'Catchiungo',
+      'catchiungo_sacc_v', 'catchiungo_sacc_a',
+      'catchiungo_saca_v', 'catchiungo_saca_a'
+    );
+
+    // Gerar observação automática sobre SE's sem dados
+    const observacao = gerarObservacaoAutomatica();
+    if (observacao) {
+      resumo += observacao;
     }
 
     resumo += `_____________________________________\n`;
@@ -150,7 +217,6 @@ function salvarConfiguracaoTSA() {
       data: new Date().toLocaleDateString('pt-PT'),
       hora: document.getElementById('horaTSA').value,
       operadores: document.getElementById('operadoresTSA').value,
-      observacoes: document.getElementById('observacoes').value,
       subestacoes: {
         benfica: {
           sacc_v: document.getElementById('benfica_sacc_v').value,
@@ -163,6 +229,12 @@ function salvarConfiguracaoTSA() {
           sacc_a: document.getElementById('caala_sacc_a').value,
           saca_v: document.getElementById('caala_saca_v').value,
           saca_a: document.getElementById('caala_saca_a').value
+        },
+        centralidade: {
+          sacc_v: document.getElementById('centralidade_sacc_v').value,
+          sacc_a: document.getElementById('centralidade_sacc_a').value,
+          saca_v: document.getElementById('centralidade_saca_v').value,
+          saca_a: document.getElementById('centralidade_saca_a').value
         },
         bailundo: {
           sacc_v: document.getElementById('bailundo_sacc_v').value,
@@ -181,6 +253,18 @@ function salvarConfiguracaoTSA() {
           sacc_a: document.getElementById('cuanova_sacc_a').value,
           saca_v: document.getElementById('cuanova_saca_v').value,
           saca_a: document.getElementById('cuanova_saca_a').value
+        },
+        cambiote: {
+          sacc_v: document.getElementById('cambiote_sacc_v').value,
+          sacc_a: document.getElementById('cambiote_sacc_a').value,
+          saca_v: document.getElementById('cambiote_saca_v').value,
+          saca_a: document.getElementById('cambiote_saca_a').value
+        },
+        catchiungo: {
+          sacc_v: document.getElementById('catchiungo_sacc_v').value,
+          sacc_a: document.getElementById('catchiungo_sacc_a').value,
+          saca_v: document.getElementById('catchiungo_saca_v').value,
+          saca_a: document.getElementById('catchiungo_saca_a').value
         }
       }
     };
@@ -215,10 +299,9 @@ function carregarConfiguracaoTSA() {
     // Carregar dados gerais
     document.getElementById('horaTSA').value = ultima.hora;
     document.getElementById('operadoresTSA').value = ultima.operadores;
-    document.getElementById('observacoes').value = ultima.observacoes;
     
     // Carregar dados de cada subestação
-    const subestacoes = ['benfica', 'caala', 'bailundo', 'camussamba', 'cuanova'];
+    const subestacoes = ['benfica', 'caala', 'centralidade', 'bailundo', 'camussamba', 'cuanova', 'cambiote', 'catchiungo'];
     subestacoes.forEach(se => {
       if (ultima.subestacoes[se]) {
         document.getElementById(`${se}_sacc_v`).value = ultima.subestacoes[se].sacc_v || '';
