@@ -9,8 +9,8 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1>TSA</h1>
-      <p>Sistema de Controle de Subestações - Região Centro / Huambo</p>
+      <h1>📡 TSA - Telesinalizações e Alarmes</h1>
+      <p>Sistema de Controle de Subestações - Região Centro</p>
     </div>
 
     <div class="controls-section">
@@ -29,7 +29,8 @@
       <h3>ℹ️ Instruções:</h3>
       <p><strong>S.A.C.C:</strong> Sistema de Alimentação em Corrente Contínua</p>
       <p><strong>S.A.C.A:</strong> Sistema de Alimentação em Corrente Alternada</p>
-      <p><strong>Dados Indisponíveis:</strong> Deixe o campo vazio ou escreva "Indisponível"</p>
+      <p><strong>Dados Indisponíveis:</strong> Deixe todos os campos da SE vazios - a observação será gerada automaticamente</p>
+      <p><strong>8 Subestações:</strong> Benfica, Caála, Centralidade da Caála, Bailundo, Camussamba, Cuca Nova, Cambiote e Catchiungo</p>
     </div>
 
     <!-- SE Benfica -->
@@ -73,6 +74,29 @@
             <input type="text" id="caala_saca_v" placeholder="Tensão (V)">
             <span>/</span>
             <input type="text" id="caala_saca_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SE Centralidade da Caála -->
+    <div class="se-card">
+      <h2>⚡ SE Centralidade da Caála</h2>
+      <div class="dados-grid">
+        <div class="campo-duplo">
+          <label>S.A.C.C (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="centralidade_sacc_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="centralidade_sacc_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+        <div class="campo-duplo">
+          <label>S.A.C.A (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="centralidade_saca_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="centralidade_saca_a" placeholder="Corrente (A)">
           </div>
         </div>
       </div>
@@ -147,10 +171,50 @@
       </div>
     </div>
 
-    <!-- Observações -->
-    <div class="observacoes-section">
-      <h3>📝 Observações</h3>
-      <textarea id="observacoes" placeholder="Ex: Os dados das SE's Centralidade da Caála, Cambiote e Catchiungo encontram-se indisponíveis"></textarea>
+    <!-- SE Cambiote -->
+    <div class="se-card">
+      <h2>⚡ SE Cambiote</h2>
+      <div class="dados-grid">
+        <div class="campo-duplo">
+          <label>S.A.C.C (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="cambiote_sacc_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="cambiote_sacc_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+        <div class="campo-duplo">
+          <label>S.A.C.A (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="cambiote_saca_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="cambiote_saca_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SE Catchiungo -->
+    <div class="se-card">
+      <h2>⚡ SE Catchiungo</h2>
+      <div class="dados-grid">
+        <div class="campo-duplo">
+          <label>S.A.C.C (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="catchiungo_sacc_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="catchiungo_sacc_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+        <div class="campo-duplo">
+          <label>S.A.C.A (V / A):</label>
+          <div class="input-group">
+            <input type="text" id="catchiungo_saca_v" placeholder="Tensão (V)">
+            <span>/</span>
+            <input type="text" id="catchiungo_saca_a" placeholder="Corrente (A)">
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Operadores -->
@@ -175,11 +239,11 @@
     </div>
 
     <footer class="copyright">
-      <p>&copy; 2026 Centro de Despacho - Região Centro. Todos os direitos reservados.</p>
+      <p>&copy; 2025 Centro de Despacho - Região Centro. Todos os direitos reservados.</p>
       <p>Sistema TSA | ENDE-EP - Empresa Nacional de Distribuição de Electricidade</p>
     </footer>
   </div>
 
-  <script src="tsa-script.js?v=1.0"></script>
+  <script src="tsa-script.js?v=2.3"></script>
 </body>
 </html>
