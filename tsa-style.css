@@ -103,6 +103,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .campo-duplo label {
@@ -120,6 +123,9 @@ body {
   border-radius: 5px;
   background: white;
   transition: all 0.3s;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .input-group:focus-within {
@@ -133,6 +139,8 @@ body {
   padding: 5px;
   font-size: 14px;
   outline: none;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .input-group span {
@@ -366,6 +374,7 @@ select:focus, input[type="text"]:focus {
   
   select, input[type="text"] {
     margin-left: 0;
+    width: 100%;
   }
   
   .dados-grid {
@@ -377,11 +386,65 @@ select:focus, input[type="text"]:focus {
   }
   
   .input-group {
-    flex-direction: column;
-    align-items: stretch;
+    padding: 8px;
   }
   
-  .input-group span {
-    display: none;
+  .input-group input {
+    font-size: 13px;
+    min-width: 0;
+  }
+}
+
+/* Responsividade extra para tablets em modo retrato */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .dados-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .campo-duplo {
+    width: 100%;
+  }
+  
+  .input-group {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .input-group input {
+    flex: 1;
+    min-width: 60px;
+    max-width: calc(50% - 15px);
+  }
+  
+  .controls-section label input[type="text"] {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+/* Ajuste fino para telas muito pequenas */
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 1.2rem;
+  }
+  
+  .se-card {
+    padding: 15px;
+  }
+  
+  .input-group {
+    flex-wrap: nowrap;
+    gap: 5px;
+    padding: 6px;
+  }
+  
+  .input-group input {
+    padding: 4px;
+    font-size: 12px;
+  }
+  
+  button {
+    padding: 10px 15px;
+    font-size: 13px;
   }
 }
