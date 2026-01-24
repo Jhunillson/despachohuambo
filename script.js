@@ -130,6 +130,10 @@ function abrirSituacaoRC() {
   window.open('situacao-rc.html', '_blank');
 }
 
+function abrirTSA() {
+  window.open('tsa.html', '_blank');
+}
+
 function copiarEPartilhar() {
   const textarea = document.getElementById("output");
   const texto = textarea.value;
