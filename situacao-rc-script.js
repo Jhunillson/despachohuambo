@@ -6,17 +6,17 @@ function formatarNumero(numero, casasDecimais = 2) {
 // Função principal de cálculo de demanda
 function calcularDemanda(provincia) {
     try {
-      const utilizada = parseFloat(document.getElementById(`${provincia}_utilizada`).value) || 0;
-      const restrMT = parseFloat(document.getElementById(`${provincia}_restr_mt`).value) || 0;
-      const restrBT = parseFloat(document.getElementById(`${provincia}_restr_bt`).value) || 0;
-      const avariaMT = parseFloat(document.getElementById(`${provincia}_avaria_mt`).value) || 0;
-      const avariaBT = parseFloat(document.getElementById(`${provincia}_avaria_bt`).value) || 0;
+      const utilizada = parseFloat(document.getElementById(`${provincia}_utilizada`).value.replace(',', '.')) || 0;
+      const restrMT = parseFloat(document.getElementById(`${provincia}_restr_mt`).value.replace(',', '.')) || 0;
+      const restrBT = parseFloat(document.getElementById(`${provincia}_restr_bt`).value.replace(',', '.')) || 0;
+      const avariaMT = parseFloat(document.getElementById(`${provincia}_avaria_mt`).value.replace(',', '.')) || 0;
+      const avariaBT = parseFloat(document.getElementById(`${provincia}_avaria_bt`).value.replace(',', '.')) || 0;
   
       const demandaCalculada = utilizada + restrMT + restrBT + avariaMT + avariaBT;
       
       const demandaField = document.getElementById(`${provincia}_demanda`);
       if (demandaField) {
-        demandaField.value = demandaCalculada.toFixed(2);
+        demandaField.value = formatarNumero(demandaCalculada);
         
         // Animação visual
         demandaField.classList.add('highlight-update');
@@ -34,7 +34,7 @@ function calcularDemanda(provincia) {
       const justificativaInput = document.getElementById(`${provincia}_just_${tipo}`);
       
       if (valorInput && justificativaInput) {
-        const valor = parseFloat(valorInput.value) || 0;
+        const valor = parseFloat(valorInput.value.replace(',', '.')) || 0;
         
         if (valor > 0) {
           justificativaInput.style.display = "block";
@@ -82,7 +82,7 @@ function calcularDemanda(provincia) {
   
         const demandaHuambo = totalUtilizada + totalRestrMT + totalRestrBT + totalAvariaMT + totalAvariaBT;
   
-        // Atualizar campos do Huambo
+        // Atualizar campos do Huambo (agora com vírgula)
         document.getElementById('huambo_demanda').value = formatarNumero(demandaHuambo);
         document.getElementById('huambo_utilizada').value = formatarNumero(totalUtilizada);
         document.getElementById('huambo_restr_mt').value = formatarNumero(totalRestrMT);
@@ -131,12 +131,12 @@ function calcularDemanda(provincia) {
   // Obter dados de uma província
   function obterDadosProvincia(provincia) {
     return {
-      demanda: parseFloat(document.getElementById(`${provincia}_demanda`).value) || 0,
-      utilizada: parseFloat(document.getElementById(`${provincia}_utilizada`).value) || 0,
-      restrMT: parseFloat(document.getElementById(`${provincia}_restr_mt`).value) || 0,
-      restrBT: parseFloat(document.getElementById(`${provincia}_restr_bt`).value) || 0,
-      avariaMT: parseFloat(document.getElementById(`${provincia}_avaria_mt`).value) || 0,
-      avariaBT: parseFloat(document.getElementById(`${provincia}_avaria_bt`).value) || 0
+      demanda: parseFloat(document.getElementById(`${provincia}_demanda`).value.replace(',', '.')) || 0,
+      utilizada: parseFloat(document.getElementById(`${provincia}_utilizada`).value.replace(',', '.')) || 0,
+      restrMT: parseFloat(document.getElementById(`${provincia}_restr_mt`).value.replace(',', '.')) || 0,
+      restrBT: parseFloat(document.getElementById(`${provincia}_restr_bt`).value.replace(',', '.')) || 0,
+      avariaMT: parseFloat(document.getElementById(`${provincia}_avaria_mt`).value.replace(',', '.')) || 0,
+      avariaBT: parseFloat(document.getElementById(`${provincia}_avaria_bt`).value.replace(',', '.')) || 0
     };
   }
   
@@ -168,9 +168,9 @@ function calcularDemanda(provincia) {
     relatorio += `P.Total Utilizada = ${formatarNumero(totais.utilizada)} MW\n`;
     relatorio += `Restrição em MT = ${formatarNumero(totais.restrMT)} MW\n`;
     relatorio += `Restrição em BT = ${formatarNumero(totais.restrBT)} MW\n`;
-    relatorio += `Total Avaria em MT =${formatarNumero(totais.avariaMT)} MW\n`;
+    relatorio += `Total Avaria em MT = ${formatarNumero(totais.avariaMT)} MW\n`;
     relatorio += `Total Avaria em BT = ${formatarNumero(totais.avariaBT)} MW\n`;
-    relatorio += `*Grau de Atendimento*= *${grauRegional}%*\n\n`;
+    relatorio += `*Grau de Atendimento* = *${grauRegional}%*\n\n`;
     relatorio += `                    *Operadores*\n        *${operadores}*\n *Att., Despacho, ENDE - HUAMBO*`;
   
     return relatorio;
@@ -198,7 +198,7 @@ function calcularDemanda(provincia) {
       texto += `Total avaria em BT = ${formatarNumero(dados.avariaBT)} MW\n`;
       texto += `*Grau de atendimento = ${grau}%*\n`;
     } else if (provincia === "CUANZA-SUL") {
-      texto += `P.Total Utilizada =${formatarNumero(dados.utilizada)}  MW\n`;
+      texto += `P.Total Utilizada = ${formatarNumero(dados.utilizada)} MW\n`;
       texto += `P.Restringida em MT = ${formatarNumero(dados.restrMT)} MW\n`;
       texto += `P. Restringida em BT = ${formatarNumero(dados.restrBT)} MW\n`;
       texto += `Total avaria em MT = ${formatarNumero(dados.avariaMT)} MW\n`;
@@ -270,6 +270,21 @@ function calcularDemanda(provincia) {
     
     window.open(whatsappUrl, '_blank');
     mostrarToast("Texto copiado e WhatsApp aberto!", "success");
+  }
+  
+  // Copiar apenas texto
+  function copiarTextoRC() {
+    const textarea = document.getElementById("relatorioOutput");
+    const texto = textarea.value;
+    
+    if (!texto.trim()) {
+      mostrarToast("Gere primeiro o relatório antes de copiar!", "error");
+      return;
+    }
+    
+    textarea.select();
+    document.execCommand("copy");
+    mostrarToast("Texto copiado para a área de transferência!", "success");
   }
   
   // Salvar configuração
@@ -348,11 +363,11 @@ function calcularDemanda(provincia) {
   }
   
   function carregarDadosProvincia(provincia, dados) {
-    document.getElementById(`${provincia}_utilizada`).value = dados.utilizada || '0.00';
-    document.getElementById(`${provincia}_restr_mt`).value = dados.restrMT || '0.00';
-    document.getElementById(`${provincia}_restr_bt`).value = dados.restrBT || '0.00';
-    document.getElementById(`${provincia}_avaria_mt`).value = dados.avariaMT || '0.00';
-    document.getElementById(`${provincia}_avaria_bt`).value = dados.avariaBT || '0.00';
+    document.getElementById(`${provincia}_utilizada`).value = dados.utilizada || '0,00';
+    document.getElementById(`${provincia}_restr_mt`).value = dados.restrMT || '0,00';
+    document.getElementById(`${provincia}_restr_bt`).value = dados.restrBT || '0,00';
+    document.getElementById(`${provincia}_avaria_mt`).value = dados.avariaMT || '0,00';
+    document.getElementById(`${provincia}_avaria_bt`).value = dados.avariaBT || '0,00';
     document.getElementById(`${provincia}_just_restr_mt`).value = dados.justRestrMT || '';
     document.getElementById(`${provincia}_just_restr_bt`).value = dados.justRestrBT || '';
     document.getElementById(`${provincia}_just_avaria_mt`).value = dados.justAvariaMT || '';
